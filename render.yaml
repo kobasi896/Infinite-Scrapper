@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: twitter-scraper
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: DATABASE_URL
+        value: "your_postgresql_url"
+      - key: REDIS_URL
+        value: "your_redis_url"
+      - key: BEARER_TOKEN
+        value: "your_bearer_token"
