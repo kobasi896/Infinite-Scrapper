@@ -41,7 +41,7 @@ with app.app_context():
 def fetch_user_id(username):
     try:
         # Fetch user details to get the Twitter user ID
-        user_response = client.get_user(username=username)
+        user_response = client.get_user(username=username, user_fields="id")
         if user_response.data:
             return user_response.data.id  # Return the user ID
         else:
@@ -65,7 +65,7 @@ def fetch_and_save_tweets(username):
             return tweet_data
 
         # Fetch tweets from Twitter API using the user ID
-        response = client.get_users_tweets(id=user_id, max_results=10)
+        response = client.get_users_tweets(id=user_id, max_results=10, tweet_fields=["created_at", "text"])
         if response.data:
             tweet_data = []
             for tweet in response.data:
