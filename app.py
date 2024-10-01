@@ -1,14 +1,18 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import tweepy
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Setup Flask App
 app = Flask(__name__)
 
-# Configure PostgreSQL Database URI
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://twitterdb_i20j_user:XSWxgFSpBwEfGhwhPNd9ZLjKzhqD3iPa@dpg-crtveeggph6c73dd6q5g-a.oregon-postgres.render.com/twitterdb_i20j')
+# Configure PostgreSQL Database URI from .env file
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize SQLAlchemy
@@ -33,7 +37,7 @@ class Tweet(db.Model):
 with app.app_context():
     db.create_all()
 
-# Fetch and save tweets to the database
+# Function to fetch tweets and save them to the database
 def fetch_and_save_tweets(username):
     try:
         # Check if tweets already exist in the database for the username
@@ -44,7 +48,7 @@ def fetch_and_save_tweets(username):
             return tweet_data
 
         # Fetch tweets from Twitter API
-        response = client.get_users_tweets(id=username, max_results=10)  # `username` here should be replaced with Twitter user_id
+        response = client.get_users_tweets(id=username, max_results=10)
         if response.data:
             tweet_data = []
             for tweet in response.data:
@@ -62,16 +66,14 @@ def fetch_and_save_tweets(username):
     except Exception as e:
         return {"error": str(e)}
 
-# Route to fetch tweets for a user
-@app.route('/tweets/<username>', methods=['GET'])
-def fetch_tweets(username):
-    tweets = fetch_and_save_tweets(username)
-    return jsonify(tweets)
-
-# Example route
-@app.route('/')
+# Route for the front-end form
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return jsonify({'message': 'Welcome to the Twitter Scraper API!'})
+    if request.method == 'POST':
+        username = request.form['username']
+        tweets = fetch_and_save_tweets(username)
+        return render_template('index.html', tweets=tweets, username=username)
+    return render_template('index.html')
 
 # Run the Flask app
 if __name__ == '__main__':

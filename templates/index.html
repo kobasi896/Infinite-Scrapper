@@ -4,26 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Twitter Scraper</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Twitter Scraper</h1>
-        <form method="GET" action="/tweets_display">
-            <input type="text" name="username" placeholder="Enter Twitter Username" required>
-            <button type="submit">Fetch Tweets</button>
-        </form>
-        
-        {% if tweets %}
-        <h2>Latest Tweets from {{ username }}:</h2>
+    <h1>Twitter Scraper</h1>
+    
+    <!-- Form to submit the username -->
+    <form method="POST" action="/">
+        <label for="username">Enter Twitter Username:</label>
+        <input type="text" id="username" name="username" required>
+        <button type="submit">Scrape Tweets</button>
+    </form>
+
+    <!-- Display results if tweets were scraped -->
+    {% if tweets %}
+        <h2>Tweets for @{{ username }}:</h2>
         <ul>
             {% for tweet in tweets %}
-            <li>{{ tweet.content }}</li>
+                <li><strong>{{ tweet.id }}:</strong> {{ tweet.text }}</li>
             {% endfor %}
         </ul>
-        {% else %}
-        <p>No tweets found.</p>
-        {% endif %}
-    </div>
+    {% endif %}
 </body>
 </html>
