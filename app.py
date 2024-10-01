@@ -37,9 +37,26 @@ class Tweet(db.Model):
 with app.app_context():
     db.create_all()
 
+# Function to fetch the user ID from the username
+def fetch_user_id(username):
+    try:
+        # Fetch user details to get the Twitter user ID
+        user_response = client.get_user(username=username)
+        if user_response.data:
+            return user_response.data.id  # Return the user ID
+        else:
+            return None
+    except Exception as e:
+        return None
+
 # Function to fetch tweets and save them to the database
 def fetch_and_save_tweets(username):
     try:
+        # First fetch the user ID using the username (Twitter handle)
+        user_id = fetch_user_id(username)
+        if not user_id:
+            return {"error": "User not found"}
+
         # Check if tweets already exist in the database for the username
         existing_tweets = Tweet.query.filter_by(username=username).all()
         if existing_tweets:
@@ -47,8 +64,8 @@ def fetch_and_save_tweets(username):
             tweet_data = [{'id': tweet.id, 'text': tweet.content, 'created_at': tweet.created_at} for tweet in existing_tweets]
             return tweet_data
 
-        # Fetch tweets from Twitter API
-        response = client.get_users_tweets(id=username, max_results=10)
+        # Fetch tweets from Twitter API using the user ID
+        response = client.get_users_tweets(id=user_id, max_results=10)
         if response.data:
             tweet_data = []
             for tweet in response.data:
