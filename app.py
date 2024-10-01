@@ -1,5 +1,3 @@
-# app.py
-
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import tweepy
@@ -10,7 +8,7 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 
 # Configure PostgreSQL Database URI
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://username:password@localhost/twitterdb')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://twitterdb_i20j_user:XSWxgFSpBwEfGhwhPNd9ZLjKzhqD3iPa@dpg-crtveeggph6c73dd6q5g-a.oregon-postgres.render.com/twitterdb_i20j')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize SQLAlchemy
