@@ -81,7 +81,7 @@ Before you begin, ensure you have met the following requirements:
     ```
 
 ### Usage
-**Basic Usage**
+### Basic Usage**
 To start scraping, run the main script:
 ```bash
 python main.py --config config.yaml
@@ -118,3 +118,45 @@ tasks:
 ```bash
 python main.py --config path/to/your_config.yaml
 ```
+
+### Contributing
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+
+### How to Contribute
+1. **Fork the Repository**
+Click the "Fork" button at the top right of this page.
+
+2. **Clone your Repository**
+```bash
+git clone https://github.com/your-username/Infinite-Scrapper.git
+```
+3. **Create a Branch**
+```bash
+git checkout -b feature/YourFeature
+```
+
+4. **Make Your Changes**
+Commit your changes with clear and descriptive messages.
+```bash
+git commit -m "Add feature X"
+```
+
+5. **Push to Your Fork**
+```bash
+git push origin feature/YourFeature
+```
+
+6. **Open a Pull Request**
+Navigate to the original repository and click the "Compare & pull request" button.
+
+### Code of Conduct
+Please read our **Code of Conduct** before contributing.
+
+### License
+Distributed under the MIT License. See LICENSE for more information.
+
+### MIT License
+
+Copyright (c) 2024
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
