@@ -55,4 +55,66 @@ Before you begin, ensure you have met the following requirements:
    ```bash
    git clone https://github.com/kobasi896/Infinite-Scrapper.git
     ```
-2.  cd Infinite-Scrapper
+2. **Navigate to the Project Directory**  
+    ```bash
+    cd Infinite-Scrapper
+    ```
+3. **Create a Virtual Environment (Optional but Recommended)**
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    ```
+4. **Install Dependencies**
+    ```bash
+    pip install -r requirements.txt
+    ```
+5. **Configure Environment Variables**
+    ```bash
+    # .env file example
+    USER_AGENT="Your User Agent String"
+    PROXY_LIST="path/to/proxy_list.txt"
+    DATABASE_URL="your_database_connection_string"
+    ```
+6. **Run Migrations (If Applicable)**
+    ```bash
+    python manage.py migrate
+    ```
+
+### Usage
+**Basic Usage**
+To start scraping, run the main script:
+```bash
+python main.py --config config.yaml
+```
+
+***Parameters***
+- --config: Path to the configuration file.
+
+### Advanced Configuration
+Infinite Scrapper uses a YAML configuration file to define scraping tasks. Below is an example of a **config.yaml**:
+```bash
+settings:
+  user_agent: "Your User Agent String"
+  proxies:
+    - "http://proxy1.com:port"
+    - "http://proxy2.com:port"
+  delay: 2  # Delay between requests in seconds
+
+tasks:
+  - name: "Example Task"
+    start_url: "https://example.com"
+    max_pages: 100
+    selectors:
+      title: "h1.title::text"
+      price: "span.price::text"
+      image: "img::attr(src)"
+    export:
+      format: "csv"
+      path: "data/example.csv"
+```
+
+
+***Running with Custom Configuration:***
+```bash
+python main.py --config path/to/your_config.yaml
+```
