@@ -10,31 +10,61 @@
     <div class="max-w-lg w-full bg-white shadow-md rounded-lg p-8">
         <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Twitter Scraper</h1>
         
-        <!-- Form to submit the username -->
+        <!-- Drag-and-Drop Zone -->
+        <div id="drop-zone" class="border-2 border-dashed border-gray-400 p-4 text-center mb-4">
+            Drag and drop a URL here
+        </div>
+
+        <!-- Form to submit the username or URL -->
         <form method="POST" action="/" class="space-y-4">
             <div>
-                <label for="username" class="block text-sm font-medium text-gray-700">Enter Twitter Username:</label>
-                <input type="text" id="username" name="username" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <label for="url" class="block text-sm font-medium text-gray-700">Enter Twitter URL:</label>
+                <input type="text" id="url" name="url" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             </div>
-            <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                Scrape Tweets
+            <button type="submit" class="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600">
+                Scrape
             </button>
         </form>
-
-        <!-- Display results if tweets were scraped -->
-        {% if tweets %}
-            <div class="mt-8">
-                <h2 class="text-xl font-semibold text-gray-800">Tweets for @{{ username }}:</h2>
-                <ul class="mt-4 space-y-2">
-                    {% for tweet in tweets %}
-                        <li class="bg-gray-50 border border-gray-200 p-4 rounded-md">
-                            <strong class="block text-gray-700">{{ tweet.id }}:</strong>
-                            <span class="text-gray-600">{{ tweet.text }}</span>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
     </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const urlInput = document.getElementById('url');
+
+        // Function to validate if the text is a URL
+        function isValidURL(string) {
+            try {
+                let url = new URL(string);
+                return url.protocol === "http:" || url.protocol === "https:";
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Drag over event
+        dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropZone.classList.add('bg-gray-200');
+        });
+
+        // Drag leave event
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('bg-gray-200');
+        });
+
+        // Drop event
+        dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropZone.classList.remove('bg-gray-200');
+            
+            const droppedText = event.dataTransfer.getData('text');
+            
+            if (isValidURL(droppedText)) {
+                urlInput.value = droppedText; // Populate the input field
+            } else {
+                alert('Invalid URL. Please drop a valid URL.');
+            }
+        });
+    </script>
 </body>
 </html>
